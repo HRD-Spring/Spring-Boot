@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hrd.spring.model.Customer;
 
+import exception.CustomerNotFoundException;
+
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {
@@ -27,7 +29,7 @@ public class CustomerController {
 	public List<Customer> getAllCustomer() {
 		return list;
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Customer getCustomer(@PathVariable("id") Long id) {
@@ -36,7 +38,7 @@ public class CustomerController {
 				return c;
 			}
 		}
-		return null;
+		throw new CustomerNotFoundException();
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +58,7 @@ public class CustomerController {
 		return customer;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteCustomer(@PathVariable("id") Long id) {
 		Customer customer = null;
 		for (Customer c : list) {
@@ -66,7 +68,7 @@ public class CustomerController {
 		}
 
 		if (customer == null) {
-
+			throw new CustomerNotFoundException();
 		} else {
 			list.remove(customer);
 		}

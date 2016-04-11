@@ -21,27 +21,27 @@ public class RestClientIntegrationTest extends Assert {
 
 	@Test
 	public void testGetAllCustomerGetForObject() {
-		RestTemplate template = new RestTemplate();
 		List<Customer> list = template.getForObject(BASE_URI, List.class);
 		assertNotNull(list);
 	}
-	
+
 	@Test
 	public void testGetAllCustomerGetForEntity() {
-		ResponseEntity<List> responseEntity = template.getForEntity(BASE_URI,List.class);
+		ResponseEntity<List> responseEntity = template.getForEntity(BASE_URI, List.class);
 		assertEquals(responseEntity.getStatusCode().value(), 200);
 	}
-	
-	@Test(expected=HttpClientErrorException.class)
+
+	@Test(expected = HttpClientErrorException.class)
 	public void testDeleteOperationFailedException() {
-		ResponseEntity<String> responseEntity = template.exchange(BASE_URI+"/100", HttpMethod.DELETE, null, String.class);
+		ResponseEntity<String> responseEntity = template.exchange(BASE_URI + "/100", HttpMethod.DELETE, null,
+				String.class);
 		assertTrue(responseEntity.getStatusCode().is2xxSuccessful());
 	}
-	
-	@Test(expected=HttpClientErrorException.class)
+
+	@Test(expected = HttpClientErrorException.class)
 	public void testDeleteOperationsuccess() {
-		template.delete(BASE_URI+"/1");
-		ResponseEntity<Customer> responseEntity = template.getForEntity(BASE_URI+"/1", Customer.class);
-		
+		template.delete(BASE_URI + "/1");
+		ResponseEntity<Customer> responseEntity = template.getForEntity(BASE_URI + "/1", Customer.class);
+
 	}
 }
